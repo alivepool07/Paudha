@@ -1,16 +1,23 @@
-# paudha_app
+# Crop Disease Detection App
 
-A new Flutter project.
+This app allows users to capture images of crops and receive predictions on possible diseases along with recommended remedies. It is designed to help farmers and gardeners quickly diagnose issues affecting their plants.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Image Capture**: Take photos of different crops directly within the app.
+- **Disease Detection**: Uses machine learning to identify crop diseases based on the captured images.
+- **Remedy Suggestions**: Provides tailored remedies for the identified diseases.
+- **Crop Selection**: Users can choose from a list of crops (e.g., Wheat, Apple, Maize, Mango, Rice, Onion, Potato, Sugarcane).
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies Used
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Flutter**: For building the app's cross-platform user interface.
+- **Camera**: To capture images within the app.
+- **Machine Learning**: For disease prediction based on image analysis.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Setup and Installation
+
+1. Clone the repository.
+2. Install the required packages by running:
+   ```bash
+   flutter pub get
