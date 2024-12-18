@@ -1,0 +1,11 @@
+{
+    "title": "Home Screen",
+    "settings": "Settings",
+    "serverIpAddress": "Server IP Address",
+    "enterIpAddress": "Enter IP address",
+    "save": "Save",
+    "savedIpAddress": "Saved IP Address: {ip}",
+    "diagnosisResults": "Diagnosis Results",
+    "detectedDisease": "Detected Disease: {diseaseName}",
+    "howToTakePhoto": "How to take the photo:\n\nEnsure that the damaged leaves are in the center of focus. Hold your device steady and make sure there is enough light for a clear picture."
+  }

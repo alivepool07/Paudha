@@ -1,46 +1,65 @@
-// import 'package:flutter/material.dart';
-// import 'pages/splash.dart'; // Import SplashPage
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'New Project',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: SplashScreen(),
-//       debugShowCheckedModeBanner: false, // Set SplashPage as the initial route
-//     );
-//   }
-// }
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'l10n.dart';
 import 'screens/home_screen.dart';
+import 'screens/lang_selection.dart';
 
-void main() {
-  runApp(PaudhaApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final String? languageCode = prefs.getString('language_code');
+  runApp(MyApp(locale: languageCode != null ? Locale(languageCode) : null));
 }
 
-class PaudhaApp extends StatelessWidget {
-  const PaudhaApp({super.key});
+class MyApp extends StatefulWidget {
+  final Locale? locale;
+
+  const MyApp({super.key, this.locale});
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>()!;
+    state.setLocale(newLocale);
+  }
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  @override
+  void initState() {
+    super.initState();
+    _locale = widget.locale;
+  }
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Paudha',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: HomeScreen(),
+      title: 'Flutter Localization Demo',
+      locale: _locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English
+        Locale('hi', ''), // Hindi
+        Locale('bn', ''), // Bangla
+      ],
       debugShowCheckedModeBanner: false,
+      home: _locale == null ? const LanguageSelectionScreen() : const HomeScreen(),
     );
   }
 }
+

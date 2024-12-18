@@ -1,52 +1,112 @@
-import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+//-------------------------------v2-------------------
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:validators/validators.dart'; // Import for IP address validation
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _ipController = TextEditingController();
+  String? _savedIpAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadIpAddress();
+  }
+
+  // Load the saved IP address from SharedPreferences
+  Future<void> _loadIpAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _savedIpAddress = prefs.getString('server_ip');
+      _ipController.text = _savedIpAddress ?? '';
+    });
+  }
+
+  // Save the IP address to SharedPreferences
+  Future<void> _saveIpAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('server_ip', _ipController.text);
+    setState(() {
+      _savedIpAddress = _ipController.text;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('IP Address Saved Successfully!')),
+    );
+  }
+
+  // Validate the IP address format
+  bool _isValidIpAddress(String ip) {
+    return isIP(ip);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('Home Screen'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                // Add your onPressed code here!
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: const Text(
+                'Settings',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
                 ),
               ),
-              child: const Text('Take a Photo'),
+            ),
+            ListTile(
+              title: const Text('Server IP Address'),
+              subtitle: TextField(
+                controller: _ipController,
+                decoration: InputDecoration(
+                  hintText: 'Enter IP address',
+                  errorText: _ipController.text.isEmpty ||
+                          _isValidIpAddress(_ipController.text)
+                      ? null
+                      : 'Invalid IP address',
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {});
+                },
+              ),
+            ),
+            ListTile(
+              title: ElevatedButton(
+                onPressed: _isValidIpAddress(_ipController.text)
+                    ? () {
+                        _saveIpAddress();
+                        Navigator.pop(context); // Close the drawer
+                      }
+                    : null,
+                child: const Text('Save'),
+              ),
             ),
           ],
+        ),
+      ),
+      body: Center(
+        child: Text(
+          'Saved IP Address: ${_savedIpAddress ?? 'None'}',
+          style: const TextStyle(fontSize: 20),
         ),
       ),
     );
   }
 }
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'New Project',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: HomePage(), // Set HomePage as the home widget
-//     );
-//   }
-// }
