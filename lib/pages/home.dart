@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validators/validators.dart'; // Import for IP address validation
+import '../l10n.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('IP Address Saved Successfully!')),
+      SnackBar(
+        content: Text(AppLocalizations.of(context).translate('save') +
+            ' ' +
+            AppLocalizations.of(context).translate('serverIpAddress') +
+            '!'),
+      ),
     );
   }
 
@@ -52,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        title: Text(AppLocalizations.of(context).translate('title')),
       ),
       drawer: Drawer(
         child: ListView(
@@ -62,20 +68,22 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
-              child: const Text(
-                'Settings',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context).translate('settings'),
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                 ),
               ),
             ),
             ListTile(
-              title: const Text('Server IP Address'),
+              title: Text(AppLocalizations.of(context)
+                  .translate('serverIpAddress')),
               subtitle: TextField(
                 controller: _ipController,
                 decoration: InputDecoration(
-                  hintText: 'Enter IP address',
+                  hintText: AppLocalizations.of(context)
+                      .translate('enterIpAddress'),
                   errorText: _ipController.text.isEmpty ||
                           _isValidIpAddress(_ipController.text)
                       ? null
@@ -95,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Navigator.pop(context); // Close the drawer
                       }
                     : null,
-                child: const Text('Save'),
+                child: Text(AppLocalizations.of(context).translate('save')),
               ),
             ),
           ],
@@ -103,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: Text(
-          'Saved IP Address: ${_savedIpAddress ?? 'None'}',
+          AppLocalizations.of(context).translate('savedIpAddress').replaceFirst(
+              '{ip}', _savedIpAddress ?? AppLocalizations.of(context).translate('none')),
           style: const TextStyle(fontSize: 20),
         ),
       ),
