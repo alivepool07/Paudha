@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:paudha_app/translations/locale_keys.g.dart';
 import '../models/crop_model.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -50,7 +52,8 @@ class _CropSelectionState extends State<CropSelection> {
       return;
     }
 
-    final cameraController = CameraController(cameras[0], ResolutionPreset.ultraHigh);
+    final cameraController =
+        CameraController(cameras[0], ResolutionPreset.ultraHigh);
 
     try {
       await cameraController.initialize();
@@ -59,7 +62,8 @@ class _CropSelectionState extends State<CropSelection> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CameraPreviewScreen(cameraController: cameraController),
+          builder: (context) =>
+              CameraPreviewScreen(cameraController: cameraController),
         ),
       );
     } catch (e) {
@@ -70,35 +74,28 @@ class _CropSelectionState extends State<CropSelection> {
   @override
   Widget build(BuildContext context) {
     final List<Crop> crops = [
-      Crop(name: 'Wheat', icon: Icons.grain),
-      Crop(name: 'Apple', icon: Icons.apple),
-      Crop(name: 'Maize', icon: Icons.emoji_nature),
-      Crop(name: 'Mango', icon: Icons.local_florist),
-      Crop(name: 'Rice', icon: Icons.rice_bowl),
-      Crop(name: 'Onion', icon: Icons.eco),
-      Crop(name: 'Potato', icon: Icons.yard),
-      Crop(name: 'Sugarcane', icon: Icons.local_bar),
-      Crop(name: 'Wheat', icon: Icons.grain),
-      Crop(name: 'Apple', icon: Icons.apple),
-      Crop(name: 'Maize', icon: Icons.emoji_nature),
-      Crop(name: 'Mango', icon: Icons.local_florist),
-      Crop(name: 'Rice', icon: Icons.rice_bowl),
-      Crop(name: 'Onion', icon: Icons.eco),
-      Crop(name: 'Potato', icon: Icons.yard),
-      Crop(name: 'Sugarcane', icon: Icons.local_bar),
-      Crop(name: 'Wheat', icon: Icons.grain),
-      Crop(name: 'Apple', icon: Icons.apple),
-      Crop(name: 'Maize', icon: Icons.emoji_nature),
-      Crop(name: 'Mango', icon: Icons.local_florist),
-      Crop(name: 'Rice', icon: Icons.rice_bowl),
-      Crop(name: 'Onion', icon: Icons.eco),
-      Crop(name: 'Potato', icon: Icons.yard),
-      Crop(name: 'Sugarcane', icon: Icons.local_bar),
+      Crop(name: 'Wheat'.tr(), icon: Icons.grain), 
+      Crop(name: 'Apple'.tr(), icon: Icons.apple),
+      Crop(name: 'Maize'.tr(), icon: Icons.emoji_nature),
+      Crop(name: 'Mango'.tr(), icon: Icons.local_florist),
+      Crop(name: 'Rice'.tr(), icon: Icons.rice_bowl),
+      Crop(name: 'Onion'.tr(), icon: Icons.eco),
+      Crop(name: 'Potato'.tr(), icon: Icons.yard),
+      Crop(name: 'Sugarcane'.tr(), icon: Icons.local_bar),
+      Crop(name: 'Wheat'.tr(), icon: Icons.grain), 
+      Crop(name: 'Apple'.tr(), icon: Icons.apple),
+      Crop(name: 'Maize'.tr(), icon: Icons.emoji_nature),
+      Crop(name: 'Mango'.tr(), icon: Icons.local_florist),
+      Crop(name: 'Rice'.tr(), icon: Icons.rice_bowl),
+      Crop(name: 'Onion'.tr(), icon: Icons.eco),
+      Crop(name: 'Potato'.tr(), icon: Icons.yard),
+      Crop(name: 'Sugarcane'.tr(), icon: Icons.local_bar),
     ];
 
     return isCameraInitialized
         ? GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4),
             itemCount: crops.length,
             itemBuilder: (context, index) {
               return GestureDetector(
@@ -159,11 +156,14 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
 
       // Resize the image
       final originalImage = img.decodeImage(File(imagePath).readAsBytesSync());
-      final resizedImage = img.copyResize(originalImage!, width: 214, height: 214);
+      final resizedImage =
+          img.copyResize(originalImage!, width: 214, height: 214);
 
       final directory = await getExternalStorageDirectory();
-      final filePath = '${directory!.path}/resized_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final newImage = File(filePath)..writeAsBytesSync(img.encodeJpg(resizedImage));
+      final filePath =
+          '${directory!.path}/resized_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final newImage = File(filePath)
+        ..writeAsBytesSync(img.encodeJpg(resizedImage));
 
       // Send the image to the backend
       final String? diseaseName = await _sendImageToBackend(newImage);
@@ -198,7 +198,8 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
       var request = http.MultipartRequest('POST', Uri.parse(serverUrl));
       request.headers['x-api-key'] = '54265bb8-3f69-4c1b-a2db-4ed4bbc274a7';
       request.fields['crop_id'] = '1'; // Replace this dynamically if needed
-      request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+      request.files
+          .add(await http.MultipartFile.fromPath('image', imageFile.path));
 
       final response = await request.send();
 
@@ -219,8 +220,10 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Capture Image", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.green, // Add background color to match the theme
+        title: Text(LocaleKeys.Take_a_Picture.tr(),
+            style: TextStyle(color: Colors.white)),
+        backgroundColor:
+            Colors.green, // Add background color to match the theme
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -234,7 +237,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.3),
                       blurRadius: 10,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
@@ -249,15 +252,17 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
               onPressed: _takePicture,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green, // Button color
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20), // Increase padding to make button larger
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(
+                    20), // Increase padding to make button larger
               ),
-              child: Icon(Icons.camera_alt, color: Colors.white, size: 40),
+              child:
+                  const Icon(Icons.camera_alt, color: Colors.white, size: 40),
             ),
             const SizedBox(height: 20),
             Text(
-              "Tap the button to take a picture",
-              style: TextStyle(fontSize: 18, color: Colors.black),
+              LocaleKeys.Camera_button.tr(),
+              style: const TextStyle(fontSize: 18, color: Colors.black),
             ),
           ],
         ),
@@ -278,73 +283,76 @@ class DisplayPictureScreen extends StatelessWidget {
     required this.diseaseName,
   });
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text('Diagnosis Results'),
-      backgroundColor: Colors.green, 
-    ),
-    body: Padding(
-      padding: const EdgeInsets.all(10.0), 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Adding some space from the top
-          const SizedBox(height: 20),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          LocaleKeys.diagnosis_Results.tr(),
+        ),
+        backgroundColor: Colors.green,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Adding some space from the top
+            const SizedBox(height: 20),
 
-          // Center the image with a fixed height
-          Center(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), // Rounded corners for the image
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3), // Shadow effect
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
+            // Center the image with a fixed height
+            Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      10), // Rounded corners for the image
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3), // Shadow effect
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.file(
+                    File(imagePath),
+                    height: 500,
+                    width: 500,
+                    fit: BoxFit.cover,
                   ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.file(
-                  File(imagePath),
-                  height: 500,
-                  width: 500, 
-                  fit: BoxFit.cover,
                 ),
               ),
             ),
-          ),
 
-          // Space between image and result box
-          const SizedBox(height: 40),
+            // Space between image and result box
+            const SizedBox(height: 40),
 
-          // Disease name box with padding, rounded corners, and a background color
-          Container(
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.green[50], 
-              border: Border.all(
-                color: Colors.green, 
-                width: 2,
+            // Disease name box with padding, rounded corners, and a background color
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.green[50],
+                border: Border.all(
+                  color: Colors.green,
+                  width: 2,
+                ),
+              ),
+              child: Text(
+                LocaleKeys.detected_Disease.tr(args: [diseaseName]),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-            child: Text(
-              'Detected Disease: $diseaseName',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-              textAlign: TextAlign.center, 
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

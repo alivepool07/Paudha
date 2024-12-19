@@ -19,17 +19,20 @@ dependencies:
   image_picker: ^0.8.5+3 
   camera: ^0.10.0+4
   path: ^1.8.0 
+  easy_localization: ^3.0.7
   permission_handler: ^10.0.0
   path_provider: ^2.0.10 # To store images locally
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0
+  
 
 
   cupertino_icons: ^1.0.8
-  shared_preferences: ^2.3.3
+  shared_preferences: ^2.0.6
   validators: ^3.0.0
   flutter_dotenv: ^5.2.1
+  flutter_easyloading: ^3.0.5
+  
 
 
 dev_dependencies:
@@ -42,10 +45,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  
   uses-material-design: true
   assets:
     - assets/
     - assets/images/
-    - l10n/en.json
-    - l10n/hi.json
-    - l10n/bn.json
+    - .env
+    - assets/translations/

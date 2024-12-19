@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:paudha_app/translations/locale_keys.g.dart';
 
 class DiagnosisSection extends StatelessWidget {
   const DiagnosisSection({super.key});
@@ -6,13 +8,13 @@ class DiagnosisSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding:  EdgeInsets.all(16),
       
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(8),
       ),
-      child: const Row(
+      child:  Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           
@@ -21,7 +23,9 @@ class DiagnosisSection extends StatelessWidget {
               
               Icon(Icons.camera_alt, size: 40, color: Colors.green),
               SizedBox(height: 8),
-              Text('Take a picture'),
+              Text(
+                LocaleKeys.Take_a_Picture.tr(),   //take picture wala text
+              ),
             ],
           ),
           Icon(Icons.arrow_forward, color: Colors.green),
@@ -29,7 +33,9 @@ class DiagnosisSection extends StatelessWidget {
             children: [
               Icon(Icons.assignment, size: 40, color: Colors.green),
               SizedBox(height: 8),
-              Text('See results'),
+              Text(
+                LocaleKeys.See_Results.tr(),  // see resulyts wala text
+              ),
             ],
           ),
         ],
