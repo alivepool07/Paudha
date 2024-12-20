@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:paudha_app/screens/result_wala_screen.dart';
 import 'package:paudha_app/translations/locale_keys.g.dart';
 import '../models/crop_model.dart';
 import 'dart:io';
@@ -161,7 +162,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
 
       final directory = await getExternalStorageDirectory();
       final filePath =
-          '${directory!.path}/resized_${DateTime.now().millisecondsSinceEpoch}.jpg';
+          '${directory!.path}/resized_${DateTime.now().millisecondsSinceEpoch}.jpeg';
       final newImage = File(filePath)
         ..writeAsBytesSync(img.encodeJpg(resizedImage));
 
@@ -178,7 +179,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
         MaterialPageRoute(
           builder: (context) => DisplayPictureScreen(
             imagePath: newImage.path,
-            diseaseName: diseaseName ?? 'Unknown Disease',
+            diseaseName: diseaseName ?? 'Unknown Disease', originalImage: imagePath,
           ),
         ),
       );
@@ -192,7 +193,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
   }
 
   Future<String?> _sendImageToBackend(File imageFile) async {
-    const String serverUrl = 'http://<YOUR-SERVER-IP>:8050/public/get_disease';
+    const String serverUrl = 'http://127.0.0.1:8050/public/get_disease';
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(serverUrl));
@@ -263,92 +264,6 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
             Text(
               LocaleKeys.Camera_button.tr(),
               style: const TextStyle(fontSize: 18, color: Colors.black),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-//---------------------------------------------------------------------DISPPLAAAAYYYYYYYYYYYYYYYYYYY--------------------------------------------------------------
-
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-  final String diseaseName;
-
-  const DisplayPictureScreen({
-    super.key,
-    required this.imagePath,
-    required this.diseaseName,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          LocaleKeys.diagnosis_Results.tr(),
-        ),
-        backgroundColor: Colors.green,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Adding some space from the top
-            const SizedBox(height: 20),
-
-            // Center the image with a fixed height
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      10), // Rounded corners for the image
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3), // Shadow effect
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.file(
-                    File(imagePath),
-                    height: 500,
-                    width: 500,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-
-            // Space between image and result box
-            const SizedBox(height: 40),
-
-            // Disease name box with padding, rounded corners, and a background color
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.green[50],
-                border: Border.all(
-                  color: Colors.green,
-                  width: 2,
-                ),
-              ),
-              child: Text(
-                LocaleKeys.detected_Disease.tr(args: [diseaseName]),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-                textAlign: TextAlign.center,
-              ),
             ),
           ],
         ),
