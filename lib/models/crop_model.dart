@@ -1,8 +1,23 @@
-import 'package:flutter/material.dart';
-
 class Crop {
+  final int id;
   final String name;
-  final IconData icon;
+  final int dimX;
+  final int dimY;
 
-  Crop({required this.name, required this.icon});
+  Crop({
+    required this.id,
+    required this.name,
+    required this.dimX,
+    required this.dimY,
+  });
+
+  // Factory constructor to create a Crop instance from JSON
+  factory Crop.fromJson(Map<String, dynamic> json) {
+    return Crop(
+      id: json['id'],
+      name: json['name'],
+      dimX: json['dimX'],
+      dimY: json['dimY'],
+    );
+  }
 }
