@@ -74,6 +74,7 @@ class ApiService {
     final responseBody = await response.stream.bytesToString();
     final responseData = jsonDecode(responseBody);
     if (responseData['success'] == true) {
+      print("hello bhai  " + responseData['message']);
       return responseData['message'];
     } else {
       throw Exception('Failed to predict disease: ${responseData['message']}');

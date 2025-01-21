@@ -4,14 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:paudha_app/translations/locale_keys.g.dart';
 
 class DisplayPictureScreen extends StatelessWidget {
-  final String originalImage;
+  // final File originalImage;
+  // final String diseaseName;
+
+  // const DisplayPictureScreen({Key? key, 
+  // required this.originalImage, 
+  // required this.diseaseName}) : super(key: key);
+
+  final String imagePath;
   final String diseaseName;
+  final String originalImage;
 
   const DisplayPictureScreen({
-    super.key,
+    Key? key,
+    required this.imagePath,
+    required this.diseaseName,
     required this.originalImage,
-    required this.diseaseName, required String imagePath,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +56,7 @@ class DisplayPictureScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
-                    File(originalImage),
+                    File(imagePath),
                     height: 500,
                     width: 500,
                     fit: BoxFit.cover,
@@ -71,7 +80,7 @@ class DisplayPictureScreen extends StatelessWidget {
                 ),
               ),
               child: Text(
-                LocaleKeys.detected_Disease.tr(args: [diseaseName]),
+                'Disease Name: $diseaseName',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
