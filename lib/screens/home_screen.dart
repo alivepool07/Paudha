@@ -9,7 +9,10 @@ import '../widgets/crop_selection.dart';
 import '../translations/locale_keys.g.dart'; // Import the generated keys
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final dynamic apiService;
+
+  
+  const HomeScreen({super.key, required this.apiService});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

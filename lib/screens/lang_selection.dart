@@ -39,7 +39,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     );
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
+      MaterialPageRoute(builder: (_) => const HomeScreen(apiService: null,)),
     );
   }
 
